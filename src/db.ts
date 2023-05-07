@@ -105,10 +105,8 @@ const cvs: CV[] = [
 
 
 
-class _context {
-    cvs: CV[] = cvs;
-    users: User[] = users;
-    skills: Skill[] = skills
-}
-let context = new _context();
-export { context, CV, User, Skill }
+export const db = {
+    skills,
+    users,
+    cvs,
+};
