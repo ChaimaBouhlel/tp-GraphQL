@@ -54,7 +54,7 @@ export const schema = createSchema({
                 }
                 const _user = context.users.find(user => args.input.userId == user.id);
                 const cv: CV = {
-                    id: "cv" + context.cvs.length!,
+                    id:   context.cvs.length!,
                     name: args.input.name,
                     age: args.input.age,
                     job: args.input.job,

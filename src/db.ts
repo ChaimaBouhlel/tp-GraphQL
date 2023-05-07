@@ -1,6 +1,9 @@
 import { defineArguments } from "graphql/type/definition";
 
-
+enum Role {
+    ADMIN = "ADMIN",
+    USER = "USER",
+}
 interface CV {
     id: number;
     name: string;
@@ -20,14 +23,14 @@ interface User {
     id: number;
     name: string;
     email: string;
-    role: 'user' | 'admin';
+    role:Role;
     // cv: CV[];
 }
 const skills: Skill[] = [
     { id: 1, designation: "Nest"},
     { id: 2, designation: "Java "},
     { id: 3, designation: "GraphQL" },
-    { id: 4, designation: "java script"},
+    { id: 4, designation: "js"},
 ];
 
 const users: User[] = [
@@ -35,28 +38,28 @@ const users: User[] = [
         id: 1,
         name: "nada",
         email: "nada@gmail.com",
-        role: 'user',
+        role: Role.USER,
 
     },
     {
         id: 2,
         name: "chaima ",
         email: "heyheyhey",
-        role: 'user',
+        role: Role.ADMIN,
 
     },
     {
         id: 3,
         name: "nada khelif",
         email: "nada khelif",
-        role: 'admin',
+        role: Role.USER,
 
     },
     {
         id: 4,
         name: "eya",
         email: "eya",
-        role: 'user',
+        role: Role.USER,
 
     },
 ];
@@ -93,7 +96,7 @@ const cvs: CV[] = [
         age: 30,
         job: "job4",
         skills:[skills[3]],
-        user: users[0],
+        user: users[3],
     },
 
 ];
