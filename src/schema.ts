@@ -68,38 +68,49 @@ export const schema = createSchema({
                 return cv;
             },
             updateCv: (parent, args, ctx, info) => {
-                const { id, skillIds } = args.input;
+                const { id, skillIds, userId ,age,name,job} = args.input;
                 const cvIndex = db.cvs.findIndex((cv) => cv.id === +id);
                 if (cvIndex === -1) {
                     throw new GraphQLError(` cv d'id ${id} n'existe pas.`);
                 }
-                let _cv = db.cvs.find(cv => cv.id === args.input.id);
-                console.log(_cv);
-
-                const index = db.cvs.indexOf(_cv!);
-                _cv!.name = args.input.name;
-
-                _cv!.age = args.input.age;
-                _cv!.job = args.input.job;
-
+                let cv = db.cvs[cvIndex];
                 let newSkills =[]
                 if ( skillIds )
                 {
                     newSkills = db.skills.filter((skill) => skillIds.includes(skill.id));
-                    _cv!.skills = newSkills;
+                    cv.skills = newSkills;
                 }
-                const _user = db.users.find(user => args.input.userId == user.id);
-                _cv!.user = _user!;
-                db.cvs[index] = _cv!
-                pubSub.publish(CV_UPDATED, { msg: 'CV_UPDATED', cv: _cv });
 
-                return _cv;
+                if ( userId)
+                {
+                    const user = db.users.find((user) => user.id === +userId);
+                    if (!user) {
+                        throw new GraphQLError(`user d'id ${userId} n'existe pas.`);
+                    }
+                    else {
+                        cv.user = user ;
+                    }
+                }
+                if(age){
+                    cv.age=age;
+                }
+                if(name){
+                    cv.name=name;
+                }
+                if(job){
+                    cv.job=job;
+                }
+
+
+                pubSub.publish(CV_UPDATED, { msg: 'CV_UPDATED', cv: cv });
+
+                return cv;
             },
             deleteCv: (parent, args, ctx, info) => {
-                const _cv = db.cvs.find(cv => cv.id === args.id);
-                const index = db.cvs.indexOf(_cv!);
+                const cv = db.cvs.find(cv => cv.id === +args.id);
+                const index = db.cvs.indexOf(cv!);
                 db.cvs.splice(index, 1)
-                pubSub.publish(CV_UPDATED, { msg: 'CV_DELETED', cv: _cv });
+                pubSub.publish(CV_UPDATED, { msg: 'CV_DELETED', cv: cv });
 
                 return true;
             }
