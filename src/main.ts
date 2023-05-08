@@ -1,9 +1,11 @@
 import { createYoga} from "graphql-yoga"
 import { createServer } from 'node:http'
 import {schema} from "./schema";
-
+import {db} from "./db/db";
+const context = {db}
 const yoga = createYoga({
-    schema
+   schema,
+    // context:{db}
 })
 
 const server = createServer(yoga)

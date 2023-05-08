@@ -1,5 +1,5 @@
 import { createPubSub, createSchema } from "graphql-yoga";
-import { db } from "./db";
+import { db } from "./db/db";
 import { realpathSync } from "fs";
 import { log } from "console";
 import { GraphQLError } from "graphql";
